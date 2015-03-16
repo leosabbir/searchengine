@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="searchEngine" basedir="." default="run">
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes"/>
+    </target>
+
+    <target name="run" depends="compile">
+        <java fork="true" classname="edu.unlv.searchengine.TermCounterApp">
+        	<classpath>
+            	<path location="build/classes"/>
+            </classpath>
+        </java>
+    </target>
+
+</project>
