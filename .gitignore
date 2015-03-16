@@ -1,1 +1,8 @@
 /bin/
+/.classpath
+/.project
+/intermediate_inverted_index.txt
+/.settings/
+/word_count_in_each_doc.txt
+/build/
+/0.tmp
