@@ -26,17 +26,39 @@ public class IntermediateInvertedIndexProcessor {
 	
 	public void process() {
 		String line;
-		
+		int blockcount = 0;
 		List<IntermediateInvertedIndex> subList = new ArrayList<IntermediateInvertedIndex>();
 		while ( (line = this.fileReader.getNextLine()) != null ) {
 			subList.add(new IntermediateInvertedIndex(line));
 			if (subList.size() == NUMBER_OF_ENTRIES_TO_SORT) {
+				blockcount++;
 				sort(subList);
 				this.fileWriter.writeLine(subList);
 				subList = new ArrayList<IntermediateInvertedIndex>();
 			}
 		}
-		this.fileWriter.flush();
+		sort(subList);
+		this.fileWriter.writeLine(subList);
+		this.fileWriter.flush();getClass();
+		this.fileWriter.close();
+	}
+	
+	private void merge(int counter, int blocks, List<IntermediateInvertedIndex> list) {
+		if (blocks == 1) {
+			return;
+		} else {
+			this.fileReader = new IntermediateInvertedIndexFileReader((counter++) + ".tmp");
+			this.fileWriter = new IntermediateInvertedIndexFileWriter(counter + ".tmp");
+			
+			String line;
+			List<IntermediateInvertedIndex> firstSubList = new ArrayList<IntermediateInvertedIndex>();
+			List<IntermediateInvertedIndex> secondSubList = new ArrayList<IntermediateInvertedIndex>();
+			
+			while ( (line = this.fileReader.getNextLine()) != null) {
+				
+			}
+			
+		}
 	}
 	
 	private void sort(List<IntermediateInvertedIndex> subList) {

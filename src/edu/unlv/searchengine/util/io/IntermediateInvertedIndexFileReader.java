@@ -8,6 +8,10 @@ public class IntermediateInvertedIndexFileReader {
 		this.fileReader = new SEFileReader(IntermediateInvertedIndexFileWriter.INTERMEDIATE_INVERTED_INDEX_FILE_PATH);
 	}
 	
+	public IntermediateInvertedIndexFileReader(String path) {
+		this.fileReader = new SEFileReader(path);
+	}
+
 	public String getNextLine() {
 		return this.fileReader.getNextLine();
 	}
