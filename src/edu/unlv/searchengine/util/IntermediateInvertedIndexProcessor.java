@@ -27,12 +27,10 @@ public class IntermediateInvertedIndexProcessor {
 	
 	public void process() {
 		String line;
-		int blockcount = 0;
 		List<IntermediateInvertedIndex> subList = new ArrayList<IntermediateInvertedIndex>();
 		while ( (line = this.fileReader.getNextLine()) != null ) {
 			subList.add(new IntermediateInvertedIndex(line));
 			if (subList.size() == NUMBER_OF_ENTRIES_TO_SORT) {
-				blockcount++;
 				sort(subList);
 				this.fileWriter.writeLine(subList);
 				subList = new ArrayList<IntermediateInvertedIndex>();

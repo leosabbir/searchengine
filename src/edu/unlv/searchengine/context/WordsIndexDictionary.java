@@ -5,11 +5,6 @@ import java.util.Map;
 
 public class WordsIndexDictionary {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
 	private static Integer index = 1;
 	private static Map<String, Integer> dictionary = new HashMap<String, Integer>();
 	private static Map<Integer, String> backdictionary = new HashMap<Integer, String>();
