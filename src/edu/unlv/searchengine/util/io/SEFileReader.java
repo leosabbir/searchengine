@@ -40,6 +40,10 @@ public class SEFileReader {
 		}
 		return null;
 	}
+	
+	public void deleteFile() {
+		this.file.delete();
+	}
 
 	public void close() {
 		try {

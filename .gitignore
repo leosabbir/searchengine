@@ -4,5 +4,7 @@
 /intermediate_inverted_index.txt
 /.settings/
 /word_count_in_each_doc.txt
+/sorted_intermediate_inverted_index.txt
 /build/
 /0.tmp
+/*.tmp

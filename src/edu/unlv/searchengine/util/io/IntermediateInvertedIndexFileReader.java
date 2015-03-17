@@ -19,4 +19,8 @@ public class IntermediateInvertedIndexFileReader {
 	public void close() {
 		this.fileReader.close();
 	}
+	
+	public void delete() {
+		this.fileReader.deleteFile();
+	}
 }

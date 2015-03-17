@@ -37,7 +37,11 @@ public class SEFileWriter {
 			this.bufferedWriter.flush();
 		} catch (IOException e) { 
 		
+		}
 	}
+	
+	public void deleteFile() {
+		this.file.delete();
 	}
 
 	public void close() {

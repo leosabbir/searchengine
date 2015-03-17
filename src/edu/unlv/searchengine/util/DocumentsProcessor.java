@@ -13,6 +13,7 @@ public class DocumentsProcessor {
 	
 	
 	public void process() {
+		System.out.println("==> Reading documents source file to generate word count file.....");
 		DocumentsReader documentReader = new DocumentsReader();
 		
 		Map<String, Integer> wordsWithCount = null;

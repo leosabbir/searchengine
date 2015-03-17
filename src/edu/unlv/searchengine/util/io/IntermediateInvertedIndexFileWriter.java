@@ -7,6 +7,7 @@ import edu.unlv.searchengine.model.IntermediateInvertedIndex;
 public class IntermediateInvertedIndexFileWriter {
 	
 	public static final String INTERMEDIATE_INVERTED_INDEX_FILE_PATH = "intermediate_inverted_index.txt";
+	public static final String SORTED_INTERMEDIATE_INVERTED_INDEX_FILE_PATH = "sorted_intermediate_inverted_index.txt";
 	private SEFileWriter fileWriter;
 	
 	public IntermediateInvertedIndexFileWriter() {
@@ -28,11 +29,14 @@ public class IntermediateInvertedIndexFileWriter {
 	public void close() {
 		this.fileWriter.close();
 	}
+	
+	public void deleteFile() {
+		this.fileWriter.deleteFile();
+	}
 
 	public void writeLine(List<IntermediateInvertedIndex> subList) {
 		for (IntermediateInvertedIndex intermediateInvertedIndex : subList) {
 			this.writeLine(intermediateInvertedIndex.toString());
-			System.out.println(intermediateInvertedIndex.toString());
 		}
 	}
 

@@ -17,6 +17,7 @@ public class WordsCountFileProcessor {
 	}
 	
 	public void process() {
+		System.out.println("==> Processing word count file to generate intermediate inverted index file...");
 		String line;
 		//boolean newDocument = false;
 		Integer documentID = 0;

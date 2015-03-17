@@ -10,7 +10,7 @@ public class TermCounterApp {
 		//DocumentsProcessor processor = new DocumentsProcessor();
 		//processor.process();
 		
-		//new WordsCountFileProcessor().process();
+		new WordsCountFileProcessor().process();
 		new IntermediateInvertedIndexProcessor().process();
 	}
 
