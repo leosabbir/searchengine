@@ -21,6 +21,10 @@ public class IntermediateInvertedIndex implements Comparable<IntermediateInverte
 		return this.docId;
 	}
 	
+	public int getFrequency() {
+		return this.frequency;
+	}
+	
 	public String toString() {
 		return wordId + "," + docId + "," + frequency;
 	}

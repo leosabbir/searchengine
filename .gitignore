@@ -8,3 +8,4 @@
 /build/
 /0.tmp
 /*.tmp
+/inverted_index_file.txt

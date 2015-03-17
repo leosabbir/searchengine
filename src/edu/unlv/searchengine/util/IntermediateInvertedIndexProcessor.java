@@ -38,13 +38,13 @@ public class IntermediateInvertedIndexProcessor {
 				subList = new ArrayList<IntermediateInvertedIndex>();
 			}
 		}
-		System.out.println("==> Sorting individual runs.....");
+		System.out.println("==> Sorting individual runs.....\n");
 		sort(subList);
 		this.fileWriter.writeLine(subList);
 		this.fileWriter.flush();
 		this.fileWriter.close();
 		
-		System.out.println("==> Merging the individual Sorted runs.....");
+		System.out.println("==> Merging the individual Sorted runs.....\n");
 		this.merge(intermediateCounter, IntermediateInvertedIndexProcessor.NUMBER_OF_ENTRIES_TO_SORT, 3);
 	}
 	

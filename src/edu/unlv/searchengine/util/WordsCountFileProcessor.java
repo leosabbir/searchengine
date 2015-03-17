@@ -8,22 +8,18 @@ public class WordsCountFileProcessor {
 	
 	private WordsCountFileReader fileReader;
 	private IntermediateInvertedIndexFileWriter fileWriter;
-	private WordsIndexDictionary wordsInedexDictionary;
 	
 	public WordsCountFileProcessor() {
 		this.fileReader = new WordsCountFileReader();
 		this.fileWriter = new IntermediateInvertedIndexFileWriter();
-		this.wordsInedexDictionary = new WordsIndexDictionary();
 	}
 	
 	public void process() {
-		System.out.println("==> Processing word count file to generate intermediate inverted index file...");
+		System.out.println("==> Processing word count file to generate intermediate inverted index file...\n");
 		String line;
-		//boolean newDocument = false;
 		Integer documentID = 0;
 		while ( (line = this.fileReader.getNextLine()) != null ) {
 			if ( line.startsWith("Document ID")) {
-				//newDocument = true;
 				this.fileReader.getNextLine(); 
 				this.fileReader.getNextLine(); //ignore two lines afte Document ID:xx is read
 				documentID = Integer.parseInt(line.split(":")[1]);
@@ -33,11 +29,8 @@ public class WordsCountFileProcessor {
 				if (wordFrequencyPair.length == 1) {
 					continue;
 				}
-				Integer wordIndex = this.wordsInedexDictionary.addWord(wordFrequencyPair[0]);
-				//System.out.println(documentID + " " + wordIndex + " " + wordFrequencyPair[1]+ " " + wordFrequencyPair[0]);
+				Integer wordIndex = WordsIndexDictionary.addWord(wordFrequencyPair[0]);
 				this.fileWriter.writeLine(new StringBuilder().append(wordIndex).append(",").append(documentID).append(",").append(wordFrequencyPair[1]).toString());
-				//this.fileWriter.flush();
-				//this.fileWriter.writeLine(wordIndex+","+documentID+","+wordFrequencyPair[1]);
 			}
 		}
 		this.fileWriter.close();

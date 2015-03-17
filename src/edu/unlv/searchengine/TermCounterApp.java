@@ -1,7 +1,7 @@
 package edu.unlv.searchengine;
 
-import edu.unlv.searchengine.util.DocumentsProcessor;
 import edu.unlv.searchengine.util.IntermediateInvertedIndexProcessor;
+import edu.unlv.searchengine.util.InvertedIndexGenerator;
 import edu.unlv.searchengine.util.WordsCountFileProcessor;
 
 public class TermCounterApp {
@@ -12,6 +12,7 @@ public class TermCounterApp {
 		
 		new WordsCountFileProcessor().process();
 		new IntermediateInvertedIndexProcessor().process();
+		new InvertedIndexGenerator().process();
 	}
 
 }
