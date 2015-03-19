@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="searchEngine" basedir="." default="run">
+<project name="searchEngine" basedir="." default="run" >
+
+	<property name="lib.dir" value="lib"/>
+	<property name="class.dir" value="bin/classes"/>
+	<property name="main.class" value="edu.unlv.searchengine.SeachEngineLauncher"/>
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
 
     <target name="clean">
-        <delete dir="build"/>
+        <delete dir="${class.dir}"/>
     </target>
 
     <target name="compile">
-        <mkdir dir="build/classes"/>
-        <javac srcdir="src" destdir="build/classes"/>
+        <mkdir dir="${class.dir}"/>
+        <javac srcdir="src" includeantruntime="false" destdir="${class.dir}" classpathref="classpath"/>
     </target>
 
     <target name="run" depends="compile">
-        <java fork="true" classname="edu.unlv.searchengine.TermCounterApp">
+        <java fork="true" classname="${main.class}">
         	<classpath>
-            	<path location="build/classes"/>
+        		<path refid="classpath"/>
+            	<path location="${class.dir}"/>
             </classpath>
         </java>
     </target>

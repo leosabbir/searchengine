@@ -23,7 +23,7 @@ public class InvertedIndexGenerator {
 	
 	public void process() {
 		System.out.println("==> Generating Inverted Index file");
-		this.fileWriter.writeLine("INVERTED_FILE_HASH=");
+		this.fileWriter.writeLine("INVERTED_FILE_HASH={");
 		String line;
 		List<IntermediateInvertedIndex> wordLocations = new ArrayList<IntermediateInvertedIndex>();
 		int previousWordId = -1;
@@ -43,6 +43,7 @@ public class InvertedIndexGenerator {
 		}
 		this.writeToFile(previousWordId, wordLocations);
 		
+		this.fileWriter.writeLine("}");
 		this.fileWriter.close();
 		System.out.println("==> DONE. Inverted Index file saved in: \"" + INVERTED_INDEX_FILE_PATH + "\"");
 	}
