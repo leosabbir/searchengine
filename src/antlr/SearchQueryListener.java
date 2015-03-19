@@ -2,8 +2,7 @@
 
   package antlr;
 
-import org.antlr.v4.runtime.tree.*;
-import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 public interface SearchQueryListener extends ParseTreeListener {
 	void enterStart(SearchQueryParser.StartContext ctx);

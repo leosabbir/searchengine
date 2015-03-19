@@ -13,5 +13,13 @@ Also JDK path has to added to system path.
  	e.g. searchEngine> ant
  	
  	This will run the program. 
- 	It Reads input documents from cran.all.1400 and
- 	outputs to the output file "output.dat"
+ 	
+ 
+ ASSIGNMENT #1
+ -------------	
+ outputs to the output file --> "word_count_in_each_doc.txt"
+ 	
+
+ASSIGNMENT #2
+-------------
+ outputs to the output file --> inverted_index_file.txt
