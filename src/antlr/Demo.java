@@ -22,7 +22,7 @@ public class Demo {
 		 * 
 		 * 
 */	
-		ANTLRInputStream input = new ANTLRInputStream(System.in);
+		ANTLRInputStream input = new ANTLRInputStream("sabbir AND sajina");
 		SearchQueryLexer lexer = new SearchQueryLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		SearchQueryParser parser = new SearchQueryParser(tokens);
