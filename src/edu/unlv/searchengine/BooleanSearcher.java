@@ -16,6 +16,7 @@ import antlr.SearchQueryLexer;
 import antlr.SearchQueryListenerImpl;
 import antlr.SearchQueryParser;
 import edu.unlv.searchengine.model.Formula;
+import edu.unlv.searchengine.util.BooleanFormulaBuilder;
 import edu.unlv.searchengine.util.InvertedIndexReader;
 
 public class BooleanSearcher {
@@ -105,7 +106,7 @@ public class BooleanSearcher {
 		SearchQueryListenerImpl searchQueryListener = new SearchQueryListenerImpl();
 		walker.walk(searchQueryListener, tree);
 
-		return Formula.create3(searchQueryListener.getTokens());
+		return BooleanFormulaBuilder.build(searchQueryListener.getTokens());
 	}
 
 }

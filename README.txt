@@ -23,3 +23,8 @@ Also JDK path has to added to system path.
 ASSIGNMENT #2
 -------------
  outputs to the output file --> inverted_index_file.txt
+ 
+ ASSIGNMENT #3
+-------------
+To launch boolean searcher, run
+searchEngine> ant

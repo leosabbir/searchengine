@@ -29,7 +29,7 @@
     </target>
 	
 	<target name="run_boolean_search" depends="compile">
-	        <java fork="true" classname="${boolean.search.main.class}" output="tee">
+	        <java fork="true" classname="${boolean.search.main.class}">
 	        	<classpath>
 	        		<path refid="classpath"/>
 	            	<path location="${class.dir}"/>
