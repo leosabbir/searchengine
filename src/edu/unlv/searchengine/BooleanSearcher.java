@@ -34,14 +34,14 @@ public class BooleanSearcher {
 		String line;
 		
 		System.out.println("Enter \"EXIT\" to exit....\n\n");
-		System.out.print("\n\n>>");
+		System.out.print("\n\nEnter Search Query (MUST BE IN BOOLEAN FORMAT):\n=>>");
 		while ( !(line = sc.nextLine()).equalsIgnoreCase("EXIT")) {
 			Formula formula = constructFormula(line);
 			
 			List<Long> result = search(formula);
 			System.out.println("Number of documents: " + result.size());
 			System.out.println(result);
-			System.out.print("\n\n>>");
+			System.out.print("\n\nEnter Search Query (MUST BE IN BOOLEAN FORMAT):\n=>>");
 		}
 		sc.close();
 	}

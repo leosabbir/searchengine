@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="searchEngine" basedir="." default="run" >
+<project name="searchEngine" basedir="." default="run_boolean_search" >
 
 	<property name="lib.dir" value="lib"/>
 	<property name="class.dir" value="bin/classes"/>
 	<property name="main.class" value="edu.unlv.searchengine.SeachEngineLauncher"/>
+	<property name="boolean.search.main.class" value="edu.unlv.searchengine.BooleanSearcher"/>
 
     <path id="classpath">
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
@@ -26,5 +27,14 @@
             </classpath>
         </java>
     </target>
+	
+	<target name="run_boolean_search" depends="compile">
+	        <java fork="true" classname="${boolean.search.main.class}" output="tee">
+	        	<classpath>
+	        		<path refid="classpath"/>
+	            	<path location="${class.dir}"/>
+	            </classpath>
+	        </java>
+	    </target>
 
 </project>
