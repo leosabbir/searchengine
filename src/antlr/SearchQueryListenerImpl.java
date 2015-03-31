@@ -54,7 +54,7 @@ public class SearchQueryListenerImpl implements SearchQueryListener{
 	@Override
 	public void enterExpr(ExprContext ctx) {
 		// TODO Auto-generated method stub
-		System.out.println(ctx.toString());
+		//System.out.println(ctx.toString());
 		
 	}
 

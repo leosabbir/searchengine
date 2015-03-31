@@ -21,26 +21,42 @@ import edu.unlv.searchengine.util.InvertedIndexReader;
 public class BooleanSearcher {
 	
 	private static Map<String, List<Long>> invertedIndex;
+	private static List<Long> allDocs = new ArrayList<Long>();
 	
 	public static void main(String[] args) {
 		invertedIndex = new InvertedIndexReader().constructInvertedIndex();
 		
+		for (long i = 1; i <= 1400; i++) {
+			allDocs.add(i);
+		}
+		
 		Scanner sc = new Scanner(System.in);
 		String line;
 		
-		while ( !(line = sc.nextLine()).equals("-1")) {
+		System.out.println("Enter \"EXIT\" to exit....\n\n");
+		System.out.print("\n\n>>");
+		while ( !(line = sc.nextLine()).equalsIgnoreCase("EXIT")) {
 			Formula formula = constructFormula(line);
-			System.out.println(search(formula));
+			
+			List<Long> result = search(formula);
+			System.out.println("Number of documents: " + result.size());
+			System.out.println(result);
+			System.out.print("\n\n>>");
 		}
 		sc.close();
 	}
 	
 	public static List<Long> search(Formula formula) {
 		if (formula.isSingleFormula()) {
-			List<Long> docs = invertedIndex.get(formula.getWord()); 
-			return docs == null ? new ArrayList<Long>() : docs;
+			List<Long> docs = invertedIndex.get(formula.getWord());
+			docs = docs == null ? new ArrayList<Long>() : docs;
+			if (formula.isNot()) {
+				computeComplement(docs);
+			}
+			
+			return docs;
 		} else {
-			return combine(formula.getOp(), search(formula.getLeft()), search(formula.getRight()));
+			return combine(formula.getOp(), formula.isNot(), search(formula.getLeft()), search(formula.getRight()));
 		}
 	}
 	
@@ -59,11 +75,20 @@ public class BooleanSearcher {
 		return new ArrayList<Long>(union);
 	}
 	
-	public static List<Long> combine (int op, List<Long> left, List<Long> right) {
+	public static List<Long> computeComplement(List<Long> original) {
+		List<Long> temp = new ArrayList<Long>(allDocs);
+		temp.removeAll(original);
+		original.clear();
+		original.addAll(temp);
+		
+		return original;
+	}
+	
+	public static List<Long> combine (int op, boolean isNot,  List<Long> left, List<Long> right) {
 		if ( op == 1) {
-			return and(left, right);
+			return isNot ? computeComplement(and(left, right)) : and(left, right);
 		} else if ( op == 2) {
-			return or(left, right);
+			return isNot ? computeComplement(or(left, right)) : or(left, right);
 		}
 		return null;
 	}
@@ -80,7 +105,7 @@ public class BooleanSearcher {
 		SearchQueryListenerImpl searchQueryListener = new SearchQueryListenerImpl();
 		walker.walk(searchQueryListener, tree);
 
-		return Formula.create2(searchQueryListener.getTokens());
+		return Formula.create3(searchQueryListener.getTokens());
 	}
 
 }
