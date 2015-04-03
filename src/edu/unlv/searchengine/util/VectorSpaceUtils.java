@@ -71,6 +71,7 @@ public class VectorSpaceUtils {
 			String[] components = line.trim().split("=>");
 			
 			String term = components[0];
+			term = term.substring(1, term.length()-1);
 			if (components.length == 1) {
 				break;
 			}
@@ -93,7 +94,6 @@ public class VectorSpaceUtils {
 			if (line.startsWith(".I")) {
 				if (query != null) {
 					computeCosine(query);
-					Collections.sort(query);
 					queries.add(query);
 					//TODO processing for each query can be done here
 				}
@@ -123,7 +123,6 @@ public class VectorSpaceUtils {
 		}
 		if (query.size() > 0) {
 			computeCosine(query);
-			Collections.sort(query);
 		}
 	}
 	
@@ -135,13 +134,18 @@ public class VectorSpaceUtils {
 		for (Long documentID : weightOfTermsInDocuments.keySet()) {
 			double cosineWt = 0;
 			for (String term : terms) {
-				if (this.weightOfTermsInDocuments.containsKey(term)) {
-					cosineWt += weightOfTermsInDocuments.get(documentID).get(term)
-							* overallTermWeight.get(term) / this.documentWeights.get(documentID);
+				if (this.weightOfTermsInDocuments.get(documentID).containsKey(term)) {
+					double ft = weightOfTermsInDocuments.get(documentID).get(term);
+					double ifd = overallTermWeight.get(term);
+					double wd = this.documentWeights.get(documentID);
+					cosineWt += ft * ifd / wd;
 				}
 			}
-			docs.add(new DocumentCosineWeightForTerm(documentID, cosineWt));
+			if (cosineWt > 0) {
+				docs.add(new DocumentCosineWeightForTerm(documentID, cosineWt));
+			}
 		}
+		Collections.sort(docs);
 		System.out.println(docs);
 
 	}
