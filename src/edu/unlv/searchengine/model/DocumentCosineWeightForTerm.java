@@ -21,6 +21,11 @@ public class DocumentCosineWeightForTerm implements Comparable<DocumentCosineWei
 	public void setCosineWeight(Double cosineWeight) {
 		this.cosineWeight = cosineWeight;
 	}
+	
+	@Override
+	public String toString() {
+		return this.documentId.toString();
+	}
 
 	@Override
 	public int compareTo(DocumentCosineWeightForTerm o) {

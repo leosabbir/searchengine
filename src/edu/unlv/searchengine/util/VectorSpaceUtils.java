@@ -1,6 +1,7 @@
 package edu.unlv.searchengine.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,15 @@ import edu.unlv.searchengine.util.io.WordCounterFileWriter;
 public class VectorSpaceUtils {
 	
 	public static final Double TOTAL_NUMBER_OF_DOCUMENTS = 1400d;
-	public static final String QUERY_FILE = "cran.qry";
+	public static final String QUERY_FILE = "custom.qry";
+	
+	Map<Long, Map<String, Double>> weightOfTermsInDocuments;
+	Map<Long, Double> documentWeights;
+	Map<String, Double> overallTermWeight;
 	
 	public Map<Long, Map<String, Double>> getWeightOfTermsInDocuments() {
-		Map<Long, Map<String, Double>> weightOfTermsInDocuments = new HashMap<Long, Map<String,Double>>();
-		Map<Long, Double> documentWeights = new HashMap<Long, Double>();
+		weightOfTermsInDocuments = new HashMap<Long, Map<String,Double>>();
+		documentWeights = new HashMap<Long, Double>();
 		
 		SEFileReader wordCountFileReader = new SEFileReader(WordCounterFileWriter.OUTPUT_FILE_PATH);
 		String line;
@@ -56,7 +61,7 @@ public class VectorSpaceUtils {
 	}
 	
 	public Map<String, Double> getOverallTermWeight() {
-		Map<String, Double> overallTermWeight = new HashMap<String, Double>();
+		this.overallTermWeight = new HashMap<String, Double>();
 		
 		SEFileReader invertedIndexFileReader = new SEFileReader(InvertedIndexGenerator.INVERTED_INDEX_FILE_PATH);
 		
@@ -71,10 +76,10 @@ public class VectorSpaceUtils {
 			}
 			Long numberofDocsTermOccursIn = (Long) ((JSONArray) JSONValue.parse(components[1])).get(0);
 			
-			overallTermWeight.put(term, Math.log(TOTAL_NUMBER_OF_DOCUMENTS/numberofDocsTermOccursIn));
+			this.overallTermWeight.put(term, Math.log(TOTAL_NUMBER_OF_DOCUMENTS/numberofDocsTermOccursIn));
 		}
 		
-		return overallTermWeight;
+		return this.overallTermWeight;
 	}
 	
 	public void readQueryFile() {
@@ -86,10 +91,11 @@ public class VectorSpaceUtils {
 		List<String> query = null;
 		while( (line = queryFileReader.getNextLine()) != null) {
 			if (line.startsWith(".I")) {
-				if (query.size() > 0) {
+				if (query != null) {
+					computeCosine(query);
+					Collections.sort(query);
 					queries.add(query);
 					//TODO processing for each query can be done here
-					//computeCosine(query);
 				}
 				query = null;
 				content = false;
@@ -116,8 +122,8 @@ public class VectorSpaceUtils {
 			}
 		}
 		if (query.size() > 0) {
-			queries.add(query);
-			//computeCosine(query);
+			computeCosine(query);
+			Collections.sort(query);
 		}
 	}
 	
@@ -129,11 +135,14 @@ public class VectorSpaceUtils {
 		for (Long documentID : weightOfTermsInDocuments.keySet()) {
 			double cosineWt = 0;
 			for (String term : terms) {
-				cosineWt += weightOfTermsInDocuments.get(documentID).get(term)
-						* overallTermWeight.get(term);
+				if (this.weightOfTermsInDocuments.containsKey(term)) {
+					cosineWt += weightOfTermsInDocuments.get(documentID).get(term)
+							* overallTermWeight.get(term) / this.documentWeights.get(documentID);
+				}
 			}
 			docs.add(new DocumentCosineWeightForTerm(documentID, cosineWt));
 		}
+		System.out.println(docs);
 
 	}
 		
