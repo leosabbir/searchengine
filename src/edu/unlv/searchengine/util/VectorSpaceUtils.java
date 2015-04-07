@@ -19,10 +19,18 @@ public class VectorSpaceUtils {
 	
 	public static final Double TOTAL_NUMBER_OF_DOCUMENTS = 1400d;
 	public static final String QUERY_FILE = "custom.qry";
+	public static final String QUERY_RELEVANT_FILE = "cranqrel";
 	
-	Map<Long, Map<String, Double>> weightOfTermsInDocuments;
-	Map<Long, Double> documentWeights;
-	Map<String, Double> overallTermWeight;
+	private Map<Long, Map<String, Double>> weightOfTermsInDocuments;
+	private Map<Long, Double> documentWeights;
+	private Map<String, Double> overallTermWeight;
+	private Map<Long, List<Long>> queryRelevantDocuments;
+	
+	public VectorSpaceUtils() {
+		this.getWeightOfTermsInDocuments();
+		this.getOverallTermWeight();
+		this.loadQueryRelevantDocuments();
+	}
 	
 	public Map<Long, Map<String, Double>> getWeightOfTermsInDocuments() {
 		weightOfTermsInDocuments = new HashMap<Long, Map<String,Double>>();
@@ -60,6 +68,28 @@ public class VectorSpaceUtils {
 		return weightOfTermsInDocuments;
 	}
 	
+	public void loadQueryRelevantDocuments() {
+		this.queryRelevantDocuments = new HashMap<Long, List<Long>>();
+		
+		SEFileReader wordCountFileReader = new SEFileReader(VectorSpaceUtils.QUERY_RELEVANT_FILE);
+		String line;
+		Long queryID = -1L;
+		while ( (line = wordCountFileReader.getNextLine()) != null ) {
+			String[] components = line.split(" ");
+			long newQueryID = Long.parseLong(components[0]);
+			long documentID = Long.parseLong(components[1]);
+			
+			if ( queryID != newQueryID) {
+				queryID = newQueryID;
+				List<Long> documents = new ArrayList<Long>();
+				documents.add(documentID);
+				this.queryRelevantDocuments.put(queryID, documents);
+			} else {
+				this.queryRelevantDocuments.get(queryID).add(documentID);
+			}
+		}
+	}
+	
 	public Map<String, Double> getOverallTermWeight() {
 		this.overallTermWeight = new HashMap<String, Double>();
 		
@@ -70,11 +100,13 @@ public class VectorSpaceUtils {
 		while ( (line = invertedIndexFileReader.getNextLine()) != null ) {
 			String[] components = line.trim().split("=>");
 			
-			String term = components[0];
-			term = term.substring(1, term.length()-1);
 			if (components.length == 1) {
 				break;
 			}
+
+			String term = components[0];
+			term = term.substring(1, term.length()-1);
+			
 			Long numberofDocsTermOccursIn = (Long) ((JSONArray) JSONValue.parse(components[1])).get(0);
 			
 			this.overallTermWeight.put(term, Math.log(TOTAL_NUMBER_OF_DOCUMENTS/numberofDocsTermOccursIn));
@@ -90,15 +122,16 @@ public class VectorSpaceUtils {
 		String line;
 		boolean content = false;
 		List<String> query = null;
+		int queryNumber = 0;
 		while( (line = queryFileReader.getNextLine()) != null) {
 			if (line.startsWith(".I")) {
 				if (query != null) {
-					computeCosine(query);
+					computeCosine(query, queryNumber);
 					queries.add(query);
-					//TODO processing for each query can be done here
 				}
 				query = null;
 				content = false;
+				queryNumber++;
 			} else if (line.startsWith(".W")) {
 				query = new ArrayList<String>();
 				content = true;
@@ -122,15 +155,14 @@ public class VectorSpaceUtils {
 			}
 		}
 		if (query.size() > 0) {
-			computeCosine(query);
+			queries.add(query);
+			computeCosine(query, queryNumber);
 		}
 	}
 	
-	public void computeCosine(List<String> terms) {
-		Map<Long, Map<String, Double>> weightOfTermsInDocuments = getWeightOfTermsInDocuments();
-		Map<String, Double> overallTermWeight = getOverallTermWeight();
-
+	public void computeCosine(List<String> terms, long queryNumber) {
 		List<DocumentCosineWeightForTerm> docs = new ArrayList<DocumentCosineWeightForTerm>();
+		int numberOfRelevantDocs = 0;
 		for (Long documentID : weightOfTermsInDocuments.keySet()) {
 			double cosineWt = 0;
 			for (String term : terms) {
@@ -143,10 +175,19 @@ public class VectorSpaceUtils {
 			}
 			if (cosineWt > 0) {
 				docs.add(new DocumentCosineWeightForTerm(documentID, cosineWt));
+				if (this.queryRelevantDocuments.get(queryNumber).contains(documentID)) {
+					numberOfRelevantDocs++;
+				}
 			}
 		}
 		Collections.sort(docs);
+		System.out.println("*******************");
+		System.out.println("Query No. " + queryNumber);
+		System.out.println("No. of doucments retrieved: " + docs.size());
+		System.out.println("Precision : " + 1.0 * numberOfRelevantDocs / docs.size());
+		System.out.println("Recall : " + 1.0 * numberOfRelevantDocs / this.queryRelevantDocuments.get(queryNumber).size() );
 		System.out.println(docs);
+		System.out.println("\n");
 
 	}
 		
