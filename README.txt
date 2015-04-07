@@ -28,3 +28,8 @@ ASSIGNMENT #2
 -------------
 To launch boolean searcher, run
 searchEngine> ant
+
+ASSIGNMENT #4
+-------------
+To launch boolean searcher, run
+searchEngine> ant
