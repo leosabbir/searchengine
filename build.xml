@@ -1,40 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="searchEngine" basedir="." default="run_boolean_search" >
+<project name="searchEngine" basedir="." default="run_vector_space_search" >
 
 	<property name="lib.dir" value="lib"/>
 	<property name="class.dir" value="bin/classes"/>
 	<property name="main.class" value="edu.unlv.searchengine.SeachEngineLauncher"/>
 	<property name="boolean.search.main.class" value="edu.unlv.searchengine.BooleanSearcher"/>
+	<property name="vectorspace.search.main.class" value="edu.unlv.searchengine.VectorSpaceSearcher"/>
 
-    <path id="classpath">
-        <fileset dir="${lib.dir}" includes="**/*.jar"/>
-    </path>
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar"/>
+	</path>
 
-    <target name="clean">
-        <delete dir="${class.dir}"/>
-    </target>
+	<target name="clean">
+		<delete dir="${class.dir}"/>
+	</target>
 
-    <target name="compile">
-        <mkdir dir="${class.dir}"/>
-        <javac srcdir="src" includeantruntime="false" destdir="${class.dir}" classpathref="classpath"/>
-    </target>
+	<target name="compile">
+		<mkdir dir="${class.dir}"/>
+		<javac srcdir="src" includeantruntime="false" destdir="${class.dir}" classpathref="classpath"/>
+	</target>
 
-    <target name="run" depends="compile">
-        <java fork="true" classname="${main.class}">
-        	<classpath>
-        		<path refid="classpath"/>
-            	<path location="${class.dir}"/>
-            </classpath>
-        </java>
-    </target>
-	
+	<target name="run" depends="compile">
+		<java fork="true" classname="${main.class}">
+			<classpath>
+				<path refid="classpath"/>
+				<path location="${class.dir}"/>
+			</classpath>
+		</java>
+	</target>
+
 	<target name="run_boolean_search" depends="compile">
-	        <java fork="true" classname="${boolean.search.main.class}">
-	        	<classpath>
-	        		<path refid="classpath"/>
-	            	<path location="${class.dir}"/>
-	            </classpath>
-	        </java>
-	    </target>
+		<java fork="true" classname="${boolean.search.main.class}">
+			<classpath>
+				<path refid="classpath"/>
+				<path location="${class.dir}"/>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="run_vector_space_search" depends="compile">
+		<java fork="true" classname="${vectorspace.search.main.class}">
+			<classpath>
+				<path refid="classpath"/>
+				<path location="${class.dir}"/>
+			</classpath>
+		</java>
+	</target>
 
 </project>
