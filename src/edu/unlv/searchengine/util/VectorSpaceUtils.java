@@ -18,7 +18,7 @@ import edu.unlv.searchengine.util.io.WordCounterFileWriter;
 public class VectorSpaceUtils {
 	
 	public static final Double TOTAL_NUMBER_OF_DOCUMENTS = 1400d;
-	public static final String QUERY_FILE = "custom.qry";
+	public static final String QUERY_FILE = "cran.qry";
 	public static final String QUERY_RELEVANT_FILE = "cranqrel";
 	
 	private Map<Long, Map<String, Double>> weightOfTermsInDocuments;
@@ -184,13 +184,10 @@ public class VectorSpaceUtils {
 		System.out.println("*******************");
 		System.out.println("Query No. " + queryNumber);
 		System.out.println("No. of doucments retrieved: " + docs.size());
-		System.out.println("Precision : " + 1.0 * numberOfRelevantDocs / docs.size());
-		System.out.println("Recall : " + 1.0 * numberOfRelevantDocs / this.queryRelevantDocuments.get(queryNumber).size() );
+		System.out.println("Precision : " + (1.0 * numberOfRelevantDocs) / docs.size());
+		System.out.println("Recall : " + (1.0 * numberOfRelevantDocs) / this.queryRelevantDocuments.get(queryNumber).size() );
 		System.out.println(docs);
 		System.out.println("\n");
 
 	}
-		
-	
-
 }
