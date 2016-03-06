@@ -27,9 +27,9 @@ ASSIGNMENT #2
  ASSIGNMENT #3
 -------------
 To launch boolean searcher, run
-searchEngine> ant
+searchEngine> ant run_boolean_search
 
 ASSIGNMENT #4
 -------------
-To launch boolean searcher, run
-searchEngine> ant
+To launch Vector Space based search engine, run
+searchEngine> ant run_vector_space_search
