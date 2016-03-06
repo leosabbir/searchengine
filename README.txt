@@ -1,3 +1,15 @@
+*********************************************************************************
+This is a simple full text search based search engine done as a part of graduate course, Advanced Data Base.
+
+This search engine is based on creation of "Inverted Index File". This inverted index file is used to find the 
+search result. The project can run two types of search queries:
+
+1. Boolean Search Query
+2. Vector Space Search Query
+
+********************************************************************************
+
+
 The project is eclipse project and can be run by importing to the eclipse IDE.
 
 OR
